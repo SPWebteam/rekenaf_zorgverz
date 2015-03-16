@@ -108,7 +108,7 @@
   <?php
     global $base_url;
     $url_encoded = urlencode($base_url . '/publiekebasisverzekering');
-    $tweet = urlencode('Ik steun de Publieke Basisverzekering. Lage premies, hoge kwaliteit en de macht weg bij zorgverzekeraars. Doe ook mee!');
+    $tweet = urlencode('Ik steun de #PubliekeBasisverzekering. Lage premies, hoge kwaliteit en macht weg bij zorgverzekeraars. Doe ook mee!');
   ?>
   <ul class="form-social">
   <li><a href="http://twitter.com/share?url=<?php print $url_encoded; ?>&amp;text=<?php print $tweet; ?>" target="_blank"><span class="sp-icons">t</span>Deel deze actie op Twitter</a></li>
