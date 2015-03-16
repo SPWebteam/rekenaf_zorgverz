@@ -272,22 +272,22 @@ function rekenaf_zorgverz_settings_form($form, &$form_state) {
     '#tree' => TRUE,
   );
 
-  $form['rekenaf_zorgverz_sp_zorg_image'] = array(
-    '#title' => 'SP zorg afbeelding',
-    '#type' => 'media',
-    '#collapsed' => FALSE,
-    '#default_value' => variable_get('rekenaf_zorgverz_sp_zorg_image', array('fid' => 0)),
-    '#required' => FALSE,
-    '#description' => '',
-    '#tree' => TRUE,
-  );
-
   $form['rekenaf_zorgverz_og_image'] = array(
     '#title' => 'OG Image',
     '#type' => 'media',
     '#collapsed' => FALSE,
     '#default_value' => variable_get('rekenaf_zorgverz_og_image', array('fid' => 0)),
     '#required' => TRUE,
+    '#description' => '',
+    '#tree' => TRUE,
+  );
+
+  $form['rekenaf_zorgverz_sp_zorg_image'] = array(
+    '#title' => 'SP zorg afbeelding',
+    '#type' => 'media',
+    '#collapsed' => FALSE,
+    '#default_value' => variable_get('rekenaf_zorgverz_sp_zorg_image', array('fid' => 0)),
+    '#required' => FALSE,
     '#description' => '',
     '#tree' => TRUE,
   );
@@ -654,7 +654,7 @@ function rekenaf_zorgverz_og_tags() {
 
   // Get og image.
   $image_fid = variable_get('rekenaf_zorgverz_og_image', array('fid' => 0));
-  $image_fid = $image_fid['fid'];
+  $image_fid = $image_fid;
   $file = file_load($image_fid);
   // Create tags
   $tags = array(
