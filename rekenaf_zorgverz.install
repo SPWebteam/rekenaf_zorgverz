@@ -119,3 +119,15 @@ function rekenaf_zorgverz_schema() {
   return $schema;
 }
 
+/**
+* Implementation of hook_uninstall().
+*/
+function rekenaf_zorgverz_uninstall() {
+  global $conf;
+  foreach (array_keys($conf) as $key) {
+    // Find variables that have the module prefix
+    if (strpos($key, 'rekenaf_zorgverz_') === 0) {
+      variable_del($key);
+    }
+  }
+}
