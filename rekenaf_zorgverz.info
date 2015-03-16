@@ -1,7 +1,9 @@
 name = Rekenaf met de zorgverzekeraars
 core = 7.x
 
-package = "SP Sections"
+package = "SP webteam"
+
+version = 7.x-1.0
 
 dependencies[] = kw_itemnames
 dependencies[] = kw_itemnames_nodequeue
