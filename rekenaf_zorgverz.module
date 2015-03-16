@@ -1,0 +1,635 @@
+<?php
+
+/**
+ * Implements hook_entity_info().
+ */
+function rekenaf_zorgverz_entity_info() {
+
+  $info = array();
+
+  $info['statement'] = array(
+    'label' => t('Statement'),
+    'entity class' => 'Entity',
+    'controller class' => 'EntityAPIController',
+    'base table' => 'rekenaf_zorgverz_statements',
+    'entity keys' => array(
+      'id' => 'stid',
+    ),
+    'module' => 'rekenaf_zorgverz',
+    'fieldable' => FALSE,
+  );
+
+  return $info;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function rekenaf_zorgverz_menu() {
+  $items = array();
+
+  $items['publiekebasisverzekering'] = array(
+    'page callback' => 'rekenaf_zorgverz_page_view',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['admin/sp/rekenaf_zorgverz'] = array(
+    'title' => 'Publieke basisverzekering instellingen',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('rekenaf_zorgverz_settings_form'),
+    'access arguments' => array('edit sp sections'),
+  );
+
+  $items['admin/sp/rekenaf_zorgverz/settings'] = array(
+    'title' => 'Algemeen',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+    'access arguments' => array('edit sp sections'),
+  );
+
+  $items['admin/sp/rekenaf_zorgverz/publish_statements'] = array(
+    'title' => 'Publiceer steunbetuigingen',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -9,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('rekenaf_zorgverz_admin_publish_statements_form'),
+    'access arguments' => array('edit sp sections'),
+  );
+
+  $items['admin/sp/rekenaf_zorgverz/depublish_statements'] = array(
+    'title' => 'Depubliceer steunbetuigingen',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -8,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('rekenaf_zorgverz_admin_depublish_statements_form'),
+    'access arguments' => array('edit sp sections'),
+  );
+
+  $items['admin/sp/rekenaf_zorgverz/delete_statements'] = array(
+    'title' => 'Verwijder steunbetuigingen',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -7,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('rekenaf_zorgverz_admin_delete_statements_form'),
+    'access arguments' => array('edit sp sections'),
+  );
+
+  return $items;
+}
+
+/**
+ * Menu callback for /rekenaf/zorgverzekeraars.
+ */
+function rekenaf_zorgverz_page_view() {
+  drupal_set_title('');
+
+  $header_image = variable_get('rekenaf_zorgverz_header_image', 0);
+  $sp_zorg_image = variable_get('rekenaf_zorgverz_sp_zorg_image', 0);
+  $verspilling_zorg_image = variable_get('rekenaf_zorgverz_verspilling_zorg_image', 0);
+
+  return array(
+    '#theme_wrappers' => array('rekenaf_zorgverz_page'),
+    '#header_image_fid' => $header_image,
+    '#header_image_label' => variable_get('rekenaf_zorgverz_label', ''),
+    '#sp_zorg_image_fid' => $sp_zorg_image,
+    '#verspilling_zorg_image_fid' => $verspilling_zorg_image,
+    '#attached' => array(
+      'library' => array(
+        array('rekenaf_zorgverz', 'owl-carousel'),
+      ),
+      'js' => array(
+        libraries_get_path('waypoints') . '/waypoints.min.js',
+        drupal_get_path('module', 'rekenaf_zorgverz') . '/rekenaf_zorgverz.js',
+      ),
+    ),
+    'page_items' => _rekenaf_zorgverz_page_items(),
+    'statement_form' => drupal_get_form('rekenaf_zorgverz_statement_form'),
+    'statements' => _rekenaf_zorgverz_statements(),
+    'statement_thumbs' => _rekenaf_zorgverz_statement_thumbs(),
+    'persons' => _rekenaf_zorgverz_persons(),
+  );
+}
+
+function rekenaf_zorgverz_library() {
+  return array(
+    'owl-carousel' => array(
+      'title' => 'Owl Carousel',
+      'website' => 'http://www.owlgraphic.com/owlcarousel2/',
+      'version' => '2.0.0-beta.1.8',
+      'js' => array(
+        libraries_get_path('owl-carousel') . '/owlcarousel/owl.carousel.js' => array(),
+      ),
+      'css' => array(
+        libraries_get_path('owl-carousel') . '/owlcarousel/owl.carousel.css' => array(),
+      ),
+    ),
+  );
+}
+
+
+
+function rekenaf_zorgverz_theme() {
+  $registry = array();
+
+  $registry['rekenaf_zorgverz_page_items'] = array(
+    'template' => 'templates/rekenaf-zorgverz-page-items',
+    'render element' => 'elements',
+  );
+
+  $registry['rekenaf_zorgverz_page'] = array(
+    'template' => 'templates/rekenaf-zorgverz-page',
+    'render element' => 'element',
+  );
+
+  $registry['rekenaf_zorgverz_page_item'] = array(
+    'template' => 'templates/rekenaf-zorgverz-page-item',
+    'variables' => array('node' => NULL),
+  );
+
+  foreach (array('activiteit', 'actualiteit', 'onderwerp', 'persoon', 'thema') as $key) {
+    $registry['rekenaf_zorgverz_page_item__' . $key] = array(
+      'template' => 'templates/rekenaf-zorgverz-page-item--' . $key,
+      'variables' => array('node' => NULL),
+      'base hook' => 'rekenaf_zorgverz_page_item',
+    );
+  }
+
+  $registry['rekenaf_zorgverz_statements'] = array(
+    'template' => 'templates/rekenaf-zorgverz-statements',
+    'render element' => 'elements',
+  );
+
+  $registry['rekenaf_zorgverz_statement'] = array(
+    'template' => 'templates/rekenaf-zorgverz-statement',
+    'variables' => array('statement' => NULL),
+  );
+
+  $registry['rekenaf_zorgverz_statement_thumbs'] = array(
+    'template' => 'templates/rekenaf-zorgverz-statement-thumbs',
+    'render element' => 'elements',
+  );
+
+  $registry['rekenaf_zorgverz_statement_thumb'] = array(
+    'template' => 'templates/rekenaf-zorgverz-statement-thumb',
+    'variables' => array('statement' => NULL),
+  );
+
+  $registry['rekenaf_zorgverz_persons'] = array(
+    'template' => 'templates/rekenaf-zorgverz-persons',
+    'variables' => array(),
+  );
+
+  return $registry;
+}
+
+function _rekenaf_zorgverz_page_items() {
+  $qid = _rekenaf_zorgverz_page_items_get_nodequeue_id();
+  $query = db_select('node', 'n');
+  $query->join('nodequeue_nodes', 'nn', 'nn.nid = n.nid');
+  $nids = $query->fields('n', array('nid'))
+    ->condition('n.status', 1)
+    ->condition('nn.qid', $qid)
+    ->orderBy('nn.position', 'ASC')
+    ->execute()
+    ->fetchCol();
+
+  $build = array(
+    '#theme_wrappers' => array('rekenaf_zorgverz_page_items'),
+  );
+
+  $nodes = node_load_multiple($nids);
+  foreach ($nodes as $node) {
+    $build[] = array('#theme' => 'rekenaf_zorgverz_page_item', '#node' => $node);
+  }
+
+  return $build;
+}
+
+function _rekenaf_zorgverz_statements() {
+  $build = array(
+    '#theme_wrappers' => array('rekenaf_zorgverz_statements'),
+  );
+  
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'statement')
+    ->propertyCondition('published', 1);
+  $result = $query->execute();
+  if (isset($result['statement'])) {
+    $statements_nids = array_keys($result['statement']);
+    $statements = entity_load('statement', $statements_nids);
+    foreach ($statements as $statement) {
+      $build[] = array('#theme' => 'rekenaf_zorgverz_statement', '#statement' => $statement);
+    }
+  }
+  return $build;
+}
+
+function _rekenaf_zorgverz_statement_thumbs() {
+  $build = array(
+    '#theme_wrappers' => array('rekenaf_zorgverz_statement_thumbs'),
+  );
+  
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'statement')
+    ->propertyCondition('published', 1);
+  $result = $query->execute();
+  if (isset($result['statement'])) {
+    $statements_nids = array_keys($result['statement']);
+    $statements = entity_load('statement', $statements_nids);
+    foreach ($statements as $statement) {
+      $build[] = array('#theme' => 'rekenaf_zorgverz_statement_thumb', '#statement' => $statement);
+    }
+  }
+  return $build;
+}
+
+function _rekenaf_zorgverz_persons() {
+  return array('#theme' => 'rekenaf_zorgverz_persons');
+}
+
+function _rekenaf_zorgverz_page_items_get_nodequeue_id() {
+  return kw_itemnames_item_id('nodequeue', 'rekenaf_zorgverz');
+}
+
+function rekenaf_zorgverz_settings_form($form, &$form_state) {
+  $form['rekenaf_zorgverz_label'] = array(
+    '#title' => 'Label',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('rekenaf_zorgverz_label', ''),
+  );
+
+  $form['rekenaf_zorgverz_header_image'] = array(
+    '#title' => 'Header afbeelding',
+    '#type' => 'media',
+    '#collapsed' => FALSE,
+    '#default_value' => variable_get('rekenaf_zorgverz_header_image', array('fid' => 0)),
+    '#required' => FALSE,
+    '#description' => '',
+    '#tree' => TRUE,
+  );
+
+  $form['rekenaf_zorgverz_sp_zorg_image'] = array(
+    '#title' => 'SP zorg afbeelding',
+    '#type' => 'media',
+    '#collapsed' => FALSE,
+    '#default_value' => variable_get('rekenaf_zorgverz_sp_zorg_image', array('fid' => 0)),
+    '#required' => FALSE,
+    '#description' => '',
+    '#tree' => TRUE,
+  );
+
+  $form['rekenaf_zorgverz_verspilling_zorg_image'] = array(
+    '#title' => 'Verspilling zorg afbeelding',
+    '#type' => 'media',
+    '#collapsed' => FALSE,
+    '#default_value' => variable_get('rekenaf_zorgverz_verspilling_zorg_image', array('fid' => 0)),
+    '#required' => FALSE,
+    '#description' => '',
+    '#tree' => TRUE,
+  );
+
+  return system_settings_form($form);
+}
+
+function rekenaf_zorgverz_admin_publish_statements_form($form, &$form_state) {
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'statement')
+    ->propertyCondition('published', 0)
+    ->propertyCondition('consent', 1);
+  $result = $query->execute();
+  if (isset($result['statement'])) {
+    $statements_nids = array_keys($result['statement']);
+    $statements = entity_load('statement', $statements_nids);
+    $form = rekenaf_zorgverz_create_table($statements, 'Publiceer');
+  }
+  else {
+    drupal_set_message('Geen ongepubliceerde steunbetuigingen met toestemming gevonden.', 'warning');
+  }
+
+  return $form;
+}
+
+function rekenaf_zorgverz_admin_publish_statements_form_submit($form, &$form_state) {
+  $values=$form_state['values']['statements'];
+  foreach ($values as $stid) {
+    if ($stid) {
+      $statement = entity_load_single('statement', $stid);
+      $statement->published = 1;
+      $statement->save();
+    }
+  }
+}
+
+function rekenaf_zorgverz_admin_depublish_statements_form($form, &$form_state) {
+  $header = array(
+    'text' => 'Steunbetuiging',
+    'name' => 'Naam',
+  );
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'statement')
+    ->propertyCondition('published', 1);
+  $result = $query->execute();
+  if (isset($result['statement'])) {
+    $statements_nids = array_keys($result['statement']);
+    $statements = entity_load('statement', $statements_nids);
+    $form = rekenaf_zorgverz_create_table($statements, 'Depubliceer');
+  }
+  else {
+    drupal_set_message('Geen gepubliceerde steunbetuigingen gevonden.', 'warning');
+  }
+
+  return $form;
+}
+
+function rekenaf_zorgverz_admin_depublish_statements_form_submit($form, &$form_state) {
+  $values=$form_state['values']['statements'];
+  foreach ($values as $stid) {
+    if ($stid) {
+      $statement = entity_load_single('statement', $stid);
+      $statement->published = 0;
+      $statement->save();
+    }
+  }
+}
+
+function rekenaf_zorgverz_admin_delete_statements_form($form, &$form_state) {
+  $header = array(
+    'text' => 'Steunbetuiging',
+    'name' => 'Naam',
+  );
+
+  $statements = entity_load('statement');
+  if (!empty($statements)) {
+    $form = rekenaf_zorgverz_create_table($statements, 'Verwijder');
+  }
+  else {
+    drupal_set_message('Geen steunbetuigingen gevonden.', 'warning');
+  }
+
+  return $form;
+}
+
+function rekenaf_zorgverz_admin_delete_statements_form_submit($form, &$form_state) {
+  $values=$form_state['values']['statements'];
+  foreach ($values as $stid) {
+    if ($stid) {
+      $statement = entity_load_single('statement', $stid);
+      $statement->delete();
+    }
+  }
+}
+
+function rekenaf_zorgverz_create_table($statements, $button_text = 'Verstuur') {
+  $form = array();
+  $header = array(
+    'photo' => '',
+    'text' => 'Steunbetuiging',
+    'name' => 'Naam',
+  );
+  foreach ($statements AS $statement) {
+    // Get image if available.
+    if (!empty($statement->fid)) {
+      $file = file_load($statement->fid);
+      $image = image_load($file->uri);
+      $content = array(
+        'file' => array(
+          '#theme' => 'image_style',
+          '#style_name' => 'media_thumbnail',
+          '#path' => $image->source,
+        ),
+      );
+      $image_output = drupal_render($content);
+    }
+    else {
+      $image_output = '<img src="/' . drupal_get_path('module', 'rekenaf_zorgverz') . '/images/anoniem.png" widt="100" height="100" />';
+    }
+    $options[$statement->stid] = array(
+      'photo' => $image_output,
+      'text' => check_plain($statement->text),
+      'name' => check_plain($statement->name),
+    );
+  }
+
+  $form['statements'] = array(
+    '#type' => 'tableselect',
+    '#header' => $header,
+    '#options' => $options,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => $button_text,
+    '#attributes' => array(
+      'class' => array('btn', 'small'),
+      'id' => 'statements-submit',
+    ),
+  );
+  return $form;
+}
+
+function template_preprocess_rekenaf_zorgverz_page(&$variables) {
+  if ($fid = $variables['element']['#header_image_fid']) {
+    $file = file_load($fid);
+    if ($file) {
+      $variables['header_image'] = spmedia_header_crop_picture($file);
+    }
+  }
+
+  $variables['label'] = $variables['element']['#header_image_label'];
+
+  if ($fid = $variables['element']['#sp_zorg_image_fid']) {
+    $file = file_load($fid);
+    if ($file) {
+      $variables['sp_zorg_image'] = spmedia_page_section_content_picture($file);
+    }
+  }
+
+  if ($fid = $variables['element']['#verspilling_zorg_image_fid']) {
+    $file = file_load($fid);
+    if ($file) {
+      $variables['verspilling_zorg_image'] = spmedia_page_section_content_picture($file);
+    }
+  }
+}
+
+
+function template_preprocess_rekenaf_zorgverz_page_item(&$variables) {
+  $node = $variables['node'];
+
+  $variables['node_wrapper'] = entity_metadata_wrapper('node', $node);
+
+  if (in_array($node->type, array('nieuws', 'opinie', 'column', 'rapport', 'publicatie'))) {
+    $variables['theme_hook_suggestions'][] = 'rekenaf_zorgverz_page_item__actualiteit';
+  }
+
+  $variables['theme_hook_suggestions'][] = 'rekenaf_zorgverz_page_item__' . $node->type;
+}
+
+function template_preprocess_rekenaf_zorgverz_page_items(&$variables) {
+  $variables['intro'] = variable_get('rekenaf_zorgverz_intro_items', '');
+}
+
+function rekenaf_zorgverz_statement_form($form, &$form_state) {
+  $form['intro'] = array(
+    '#markup' => '<p>Met de publieke basisverzekering gaan de premies omlaag, de kwaliteit omhoog en breken we de macht van de zorgverzekeraars. Pati&euml;nten, artsen en andere zorgverleners spreken zich uit voor de publieke basisverzekering. Spreek u ook uit! Vul het formulier in en vertel ons waarom u de publieke basisverzekering steunt.</p>',
+  );
+
+  $form['text'] = array(
+    '#type' => 'textarea',
+    '#title' => '',
+    '#description' => '',
+    '#cols' => 60,
+    '#rows' => 5,
+    '#required' => TRUE,
+    '#attributes' => array(
+      'placeholder' => 'Vul hier uw steunbetuiging in',
+    ),
+  );
+
+  $form['disclaimer'] = array(
+    '#markup' => '<p>Wij plaatsen een selectie van de steunbetuigingen op de website.<br/>Hieronder kunt u uw foto bijvoegen. Dit is optioneel.</p>',
+  );
+
+  $form['image'] = array(
+    '#type' => 'managed_file',
+    '#title' => '',
+    '#upload_validators' => array(
+      'file_validate_size' => array(8 * 1024 * 1024),
+      'file_validate_is_image' => array(),
+    ),
+    '#upload_location' => 'public://rekenaf_zorgverz/'
+  ); 
+
+  $form['name'] = array(
+    '#type' => 'textfield',
+    '#title' => '',
+    '#description' => '',
+    '#maxlength' => 254,
+    '#size' => 40,
+    '#required' => TRUE,
+    '#attributes' => array(
+      'placeholder' => 'Uw naam',
+    ),
+  );
+
+  $form['email'] = array(
+    '#type' => 'textfield',
+    '#title' => '',
+    '#description' => 'Uw e-mailadres wordt vertrouwelijk behandeld',
+    '#maxlength' => 254,
+    '#size' => 40,
+    '#required' => TRUE,
+    '#attributes' => array(
+      'placeholder' => 'E-mail',
+    ),
+  );
+
+  $default = 
+  $form['consent'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Ik geef toestemming om de steunbetuiging op de website te plaatsen',
+    '#description' => '',
+    '#default_value' => 1,
+  );
+
+  $form['subscribe'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Hou me op de hoogte van belangrijk SP nieuws.',
+    '#description' => '',
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Verstuur',
+    '#attributes' => array(
+      'class' => array('btn', 'small'),
+      'id' => 'statement-submit',
+    ),
+  );
+
+  return $form;
+}
+
+function rekenaf_zorgverz_statement_form_validate($form, &$form_state) {
+  $values = $form_state['values'];
+}
+
+function rekenaf_zorgverz_statement_form_submit($form, &$form_state) {
+  // Create new statement entity.
+  $values = $form_state['values'];
+  $statement = entity_create('statement', array());
+  $statement->type = 'rekenaf_zorgverzekeraars';
+  $statement->published = 0;
+  $statement->date = time();
+  $statement->name = $values['name'];
+  $statement->email = $values['email'];
+  $statement->text = $values['text'];
+  $statement->fid = $values['image'];
+  $statement->subscribe_sp_news = $values['subscribe'];
+  $statement->consent = $values['consent'];
+  $statement->save();
+  drupal_set_message('Bedankt voor uw steunbetuiging!');
+  if (!empty($values['image'])) {
+    // Resize image.
+    $file = file_load($values['image']);
+    $file->status = FILE_STATUS_PERMANENT;
+    file_save($file);
+    $image = image_load($file->uri);
+    $scaled = image_scale($image, 1024, 1024); // it returns TRUE
+    image_save($image); 
+  }
+  rekenaf_zorgverz_send_thanks_mail($values);
+}
+
+function rekenaf_zorgverz_mail($key, &$message, $params) {
+  switch($key) {
+    case 'rekenaf_zorgverz_thanks':
+      rekenaf_zorgverz_thanks_mail($message, $params);
+      break;
+  } 
+}
+
+function rekenaf_zorgverz_thanks_mail(&$message, $params) {
+  global $base_url;
+  $values = $params['values'];
+  foreach($values as $key => $value) {
+    $values[$key] = check_plain($value);
+  }
+  if (empty($values['name'])) {
+    $salutation = 'Beste mevrouw, meneer';
+  }
+  else {
+    $salutation = 'Beste ' . $values['name'];
+  }
+  $message['subject'] = 'Bedankt voor uw steunbetuiging!';
+  $message['body'] = array();
+  $message['body'][] = <<<END
+<p>Beste . $saluation<br/>
+Hartelijk dank voor uw steunbetuiging. Wij zullen een selectie van de steunbetuigingen op onze site plaatsen. Samen met u gaan we de strijd aan voor de publieke basisverzekering. Zo kunnen de premies omlaag, de kwaliteit omhoog en breken we de macht van de zorgverzekeraars.</p>
+<p>Roep iedereen in uw omgeving op om ook zijn of haar steun uit te spreken! En wilt u samen met de SP de strijd aangaan voor goede en betaalbare zorg? <a href="https://www.sp.nl/doe-mee">Sluit u dan aan bij onze partij</a>.</p> 
+<p>Met vriendelijke groeten,<br/>
+Renske Leijten<br/>
+SP-Kamerlid woordvoerder zorg</p>
+END;
+}
+
+function rekenaf_zorgverz_send_thanks_mail($values) {
+  $mail = drupal_mail(
+    'rekenaf_zorgverz', 'rekenaf_zorgverz_thanks',
+    $values['email'],
+    LANGUAGE_NONE,
+    array(
+      'values' => $values,
+      'format' => SWIFTMAILER_FORMAT_HTML,
+    ),
+    'zorgactie@sp.nl'
+  );
+
+  if (!empty($mail['send'])) {
+    return TRUE;
+  }
+  drupal_set_message('Het is niet helaas niet gelukt om u een bevestigingsmail te versturen.', 'error');
+  return FALSE;
+}

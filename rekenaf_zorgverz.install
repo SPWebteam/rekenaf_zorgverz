@@ -1,0 +1,121 @@
+<?php
+
+function rekenaf_zorgverz_kw_manifests_info() {
+  $manifests = array();
+
+  $manifests['nodequeue'] = array(
+    'callback' => 'rekenaf_zorgverz_manifest_nodequeue',
+  );
+
+  return $manifests;
+}
+
+function rekenaf_zorgverz_manifest_nodequeue() {
+  $qid = kw_itemnames_item_id('nodequeue', 'rekenaf_zorgverz');
+
+  $query = db_select('nodequeue_queue', 'nq')
+    ->fields('nq', array('qid'))
+    ->condition('nq.name', 'rekenaf_zorgverz_items');
+  if ($qid) {
+    $query->condition('nq.qid', $qid, '!=');
+  }
+
+  $qids = $query
+    ->execute()
+    ->fetchCol();
+  foreach ($qids as $qid) {
+    nodequeue_delete($qid);
+  }
+
+  $queue = kw_itemnames_ensure('nodequeue', 'rekenaf_zorgverz', array(
+    'name' => 'rekenaf_zorgverz_items',
+    'title' => 'Rekenaf Zorgerverzekeraars Item\'s',
+    'subqueue_title' => '',
+    'owner' => 'nodequeue',
+    'size' => 9,
+    'link' => '',
+    'link_remove' => '',
+    'show_in_ui' => 1,
+    'show_in_tab' => 1,
+    'show_in_links' => 0,
+    'reference' => '0',
+    'reverse' => 0,
+    'types' => array('thema', 'activiteit', 'column', 'nieuws', 'onderwerp', 'opinie', 'page', 'persoon', 'publicatie', 'rapport'),
+  ), array());
+
+  $subqueue = kw_itemnames_ensure('subqueue', 'rekenaf_zorgverz_' . $queue->qid,
+    array(
+      'title' => 'Rekenaf Zorgerzekeraars Item\'s',
+    ), array(
+      'queue' => $queue,
+      'reference' => $queue->qid,
+    )
+  );
+}
+
+/**
+ * Implements hook_schema().
+ */
+function rekenaf_zorgverz_schema() {
+  $schema['rekenaf_zorgverz_statements'] = array(
+    'description' => 'Rekenaf met de zorgverzekeraars steunbetuigingen.',
+    'fields' => array(
+      'stid' => array(
+        'description' => 'Primary key',
+        'type' => 'serial',
+        'size' => 'big',
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => 'Kind of mutation (deposit, withdrawal, lunch-payment).',
+        'type' => 'varchar',
+        'length' => '255',
+      ),
+      'published' => array(
+        'description' => 'Publication status.',
+        'type' => 'int',
+        'size' => 'tiny',
+      ),
+      'date' => array(
+        'description' => 'The remark date in Unix timestamp format.',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'name' => array(
+        'description' => 'Name.',
+        'type' => 'varchar',
+        'length' => '255',
+      ),
+      'email' => array(
+        'description' => 'E-mail.',
+        'type' => 'varchar',
+        'length' => '255',
+      ),
+      'text' => array(
+        'description' => 'Statement text.',
+        'type' => 'text',
+      ),
+      'fid' => array(
+        'description' => 'File id.',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'subscribe_sp_news' => array(
+        'description' => 'Abonneer op belangrijk SP nieuws.',
+        'type' => 'int',
+        'size' => 'tiny',
+      ),
+      'consent' => array(
+        'description' => 'Zonder naamsvermelding.',
+        'type' => 'int',
+        'size' => 'tiny',
+      ),
+    ),
+    'primary key' => array(
+      'stid',
+    ),
+  );
+
+  return $schema;
+}
+

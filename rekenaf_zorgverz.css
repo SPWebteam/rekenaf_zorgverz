@@ -1,0 +1,125 @@
+#rekenaf-zorgverz-statement-form {
+  border: solid 1px #000;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+#rekenaf-zorgverz-statement-form {
+  margin: 2em 0;
+}
+
+#rekenaf-zorgverz-statement-form .form-item-name label,
+#rekenaf-zorgverz-statement-form .form-item-email label {
+  display: none;
+}
+
+#rekenaf-zorgverzekeraars-subheader li {
+  display: inline-block;
+  margin: 0 1em;
+}
+
+#rekenaf-zorgverzekeraars-subheader li.active a {
+  color: #000;
+}
+
+#rekenaf-zorgverz-statement-form .form-required {
+  display: none;
+}
+.page-publiekebasisverzekering h1 {
+  color: #000;
+}
+
+.page-publiekebasisverzekering div.center {
+  width: 80%;
+  margin: auto;
+}
+
+.page-publiekebasisverzekering blockquote {
+  background: #f9f9f9;
+  border-left: 10px solid #ccc;
+  margin: 0 10px 0 130px;
+  padding: 0.5em 1em;
+  quotes: "\201C""\201D""\2018""\2019";
+  font-style: italic;
+  clear: none;
+}
+
+.page-publiekebasisverzekering blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+
+.page-publiekebasisverzekering blockquote:after {
+  color: #ccc;
+  content: close-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-left: 0m;
+  vertical-align: -0.4em;
+}
+
+.page-publiekebasisverzekering blockquote p {
+  display: inline;
+}
+
+#support-examples img,
+#steunbetuigingen-content img {
+  float: left;
+}
+
+#support-examples p, 
+#steunbetuigingen-content p {
+  padding: 1.5em 0 0.5em;
+  margin: 0;
+  clear: both;
+}
+
+#steunbetuigingen-content ul {
+  padding-left: 0;
+}
+
+.page-publiekebasisverzekering #edit-image-upload-button,
+.page-publiekebasisverzekering #edit-image-upload-button--2,
+.page-publiekebasisverzekering #edit-image-remove-button {
+  background-color: #fff;
+  border: 1px solid #ec1b23;
+  color: #ec1b23;
+}
+
+.page-publiekebasisverzekering #edit-image-upload-button:hover,
+.page-publiekebasisverzekering #edit-image-upload-button--2:hover,
+.page-publiekebasisverzekering #edit-image-remove-button:hover {
+  background-color: #000;
+  border: 1px solid #000;
+  color: #fff;
+}
+
+.page-publiekebasisverzekering .form-social span {
+  color: white;
+  font-family: "SP-Icons";
+  background-color: red;
+  padding: 0.3rem;
+  margin-right: 2rem;
+}
+
+.page-publiekebasisverzekering .form-social span:hover {
+  background-color: black;
+}
+
+.page-publiekebasisverzekering .form-social a:hover {
+  color: #000;
+}
+
+@media screen and (max-width: 400px) {
+  .page-publiekebasisverzekering blockquote {
+    clear: both;
+    margin: 0 10px 0 0;
+  }
+  .page-publiekebasisverzekering img {
+    margin: 0 0 10px 0;
+  }
+}
