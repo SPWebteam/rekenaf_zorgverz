@@ -35,6 +35,7 @@
     <p>De zorgverzekeraars verspillen jaarlijks honderden miljoenen aan reclame en klantenbinding, maken winsten, willen beslissen waar u uw zorg krijgt en gaan op de stoel van artsen zitten. Het is hoog tijd dat we de  enorme macht van de zorgverzekeraars breken. Dan pakken we de zeggenschap over de zorg terug.</p>
     <p>Het kan als we de basisverzekering weer publiek regelen. Door de zorgverzekeraars om te vormen tot &eacute;&eacute;n publieke organisatie kunnen de premies omlaag, de kwaliteit omhoog en halen we de macht weg bij de zorgverzekeraars. Honderden miljoenen worden bespaard op de uitvoering. De bureaucratie wordt aangepakt.</p>
     <p>Dit kabinet heeft geen probleem met de enorme macht van de zorgverzekeraars. Sterker nog, zij vergroten de macht. Pati&euml;nten, huisartsen, psychologen en psychotherapeuten spraken zich al uit tegen de macht van de zorgverzekeraars, en voor een publieke basisverzekering. Doet u ook mee? <a class="link-to-support-form" href="#rekenaf-zorgverz-statement-form">Spreek u uit voor de publieke basisverzekering!</a></p>
+    <p>Lees het hele voorstel voor de publieke basisverzekering <a href="https://www.sp.nl/rapport/2014/landelijke-zorgvoorziening-0" target="_blank">hier</a>.</p>
     <section class="page-section page-section-image full-width-content">
       <figure>
         <?php print render($sp_zorg_image); ?>
