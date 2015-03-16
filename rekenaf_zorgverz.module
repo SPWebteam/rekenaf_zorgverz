@@ -88,6 +88,9 @@ function rekenaf_zorgverz_page_view() {
   $sp_zorg_image = variable_get('rekenaf_zorgverz_sp_zorg_image', 0);
   $verspilling_zorg_image = variable_get('rekenaf_zorgverz_verspilling_zorg_image', 0);
 
+  // Add OG tags.
+  rekenaf_zorgverz_og_tags();
+
   return array(
     '#theme_wrappers' => array('rekenaf_zorgverz_page'),
     '#header_image_fid' => $header_image,
@@ -275,6 +278,16 @@ function rekenaf_zorgverz_settings_form($form, &$form_state) {
     '#collapsed' => FALSE,
     '#default_value' => variable_get('rekenaf_zorgverz_sp_zorg_image', array('fid' => 0)),
     '#required' => FALSE,
+    '#description' => '',
+    '#tree' => TRUE,
+  );
+
+  $form['rekenaf_zorgverz_og_image'] = array(
+    '#title' => 'OG Image',
+    '#type' => 'media',
+    '#collapsed' => FALSE,
+    '#default_value' => variable_get('rekenaf_zorgverz_og_image', array('fid' => 0)),
+    '#required' => TRUE,
     '#description' => '',
     '#tree' => TRUE,
   );
@@ -632,4 +645,90 @@ function rekenaf_zorgverz_send_thanks_mail($values) {
   }
   drupal_set_message('Het is niet helaas niet gelukt om u een bevestigingsmail te versturen.', 'error');
   return FALSE;
+}
+
+function rekenaf_zorgverz_og_tags() {
+  global $base_url;
+  $page_title = 'Steun de publieke basisverzekering!';
+  $page_description = 'De zorgverzekeraars verspillen jaarlijks honderden miljoenen aan reclame en klantenbinding, maken winsten, willen beslissen waar u uw zorg krijgt en gaan op de stoel van artsen zitten. Het is hoog tijd dat we de enorme macht van de zorgverzekeraars breken. Dan pakken we de zeggenschap over de zorg terug.';
+
+  // Get og image.
+  $image_fid = variable_get('rekenaf_zorgverz_og_image', array('fid' => 0));
+  $image_fid = $image_fid['fid'];
+  $file = file_load($image_fid);
+  // Create tags
+  $tags = array(
+    'og.title' => array(
+      '#tag' => 'meta',
+      '#attributes' => array(
+        'property' => 'og:title',
+        'content' => $page_title
+      )
+    ),
+    'og.description' => array(
+      '#tag' => 'meta',
+      '#attributes' => array(
+        'property' => 'og:description',
+        'content' => $page_description
+      )
+    ),
+    'og.site_name' => array(
+      '#tag' => 'meta',
+      '#attributes' => array(
+        'property' => 'og:site_name',
+        'content' => variable_get('site_name'),
+      )
+    ),
+    'og.locale' => array(
+      '#tag' => 'meta',
+      '#attributes' => array(
+        'property' => 'og:locale',
+        'content' => 'nl_NL'
+      )
+    ),
+    'og.url' => array(
+      '#tag' => 'meta',
+      '#attributes' => array(
+        'property' => 'og:url',
+        'content' => $base_url . '/' . current_path(),
+      )
+    ),
+  );
+
+  if ($file) {
+    $image_url = file_create_url($file->uri);
+    $image_url_local = preg_replace('/\?.*$/', '', substr(str_replace($base_url, '', $image_url),1));
+    $image_data = image_get_info($image_url_local);
+    $width = $image_data['width'];
+    $height = $image_data['height'];
+    $image_tags = array(
+      'og.image' => array(
+        '#tag' => 'meta',
+        '#attributes' => array(
+          'property' => 'og:image',
+          'content' => $image_url
+        )
+      ),
+      'og.image.width' => array(
+        '#tag' => 'meta',
+        '#attributes' => array(
+          'property' => 'og:image:width',
+          'content' => $width
+        )
+      ),
+      'og.image.height' => array(
+        '#tag' => 'meta',
+        '#attributes' => array(
+          'property' => 'og:image:height',
+          'content' => $height
+        )
+      ),
+    );
+    $tags = array_merge($tags, $image_tags);
+  }
+
+  // Add tags to head
+  foreach ($tags as $key => $val) {
+    drupal_add_html_head($val, $key);
+  }
 }
