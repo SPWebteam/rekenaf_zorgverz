@@ -34,7 +34,7 @@
   <div class="node text-wrapper tab-content" id="wegmetdezorgverzekeraars-content">
     <p>De zorgverzekeraars verspillen jaarlijks honderden miljoenen aan reclame en klantenbinding, maken winsten, willen beslissen waar u uw zorg krijgt en gaan op de stoel van artsen zitten. Het is hoog tijd dat we de  enorme macht van de zorgverzekeraars breken. Dan pakken we de zeggenschap over de zorg terug.</p>
     <p>Het kan als we de basisverzekering weer publiek regelen. Door de zorgverzekeraars om te vormen tot &eacute;&eacute;n publieke organisatie kunnen de premies omlaag, de kwaliteit omhoog en halen we de macht weg bij de zorgverzekeraars. Honderden miljoenen worden bespaard op de uitvoering. De bureaucratie wordt aangepakt.</p>
-    <p>Dit kabinet heeft geen probleem met de enorme macht van de zorgverzekeraars. Sterker nog, zij vergroten de macht. Pati&euml;nten, huisartsen, psychologen en psychotherapeuten spraken zich al uit tegen de macht van de zorgverzekeraars, en voor een publieke basisverzekering. Doet u ook mee? <?php print $statements_quantity ? 'Al ' . $statements_quantity . ' mensen gingen u voor. ' : ''; ?><a class="link-to-support-form" href="#rekenaf-zorgverz-statement-form">Spreek u uit voor de publieke basisverzekering!</a></p>
+    <p>Dit kabinet heeft geen probleem met de enorme macht van de zorgverzekeraars. Sterker nog, zij vergroten de macht. Pati&euml;nten, huisartsen, psychologen en psychotherapeuten spraken zich al uit tegen de macht van de zorgverzekeraars, en voor een publieke basisverzekering. Doet u ook mee? <a class="link-to-support-form" href="#rekenaf-zorgverz-statement-form">Spreek u uit voor de publieke basisverzekering!</a> <?php print $statements_quantity ? '<strong>Al ' . $statements_quantity . ' mensen gingen u voor.</strong>' : ''; ?></p>
     <p>Lees het hele voorstel voor de publieke basisverzekering <a href="https://www.sp.nl/rapport/2014/landelijke-zorgvoorziening-0" target="_blank">hier</a>.</p>
     <section class="page-section page-section-image full-width-content">
       <figure>
@@ -56,7 +56,7 @@
     <p>Ook voor de pati&euml;nten is het goed nieuws. Niet de zorgverzekeraars zal kiezen waar je de zorg krijgt, dat doe je zelf. Het uitsluiten van verzekerden die veel zorg nodig hebben, zoals chronisch zieken, oud-kankerpati&euml;nten en ouderen, is afgelopen. De publieke basisverzekering is er voor iedereen. De zorg is van ons allemaal. <a class="link-to-support-form" href="#rekenaf-zorgverz-statement-form">Spreek u uit voor de publieke basisverzekering!</a></p>
   </div>
   <div class="node text-wrapper tab-content" id="steunbetuigingen-content">
-    <?php print $statements_quantity ? '<p>Reeds ' . $statements_quantity . ' mensen hebben een steunbetuiging ingezonden. We tonen hier de laatste 500 geselecteerde steunbetuigingen.</p>' : ''; ?>
+    <?php print $statements_quantity ? '<p><strong>Reeds ' . $statements_quantity . ' mensen hebben een steunbetuiging ingezonden.</strong> We tonen hier de laatste 500 geselecteerde steunbetuigingen.</p>' : ''; ?>
     <?php print $element['statements']['#children']; ?>
     <div class="node text-wrapper items">
       <p>Dr. Jaap van den Heuvel - directievoorzitter Reinier de Graaf Groep</p> 
