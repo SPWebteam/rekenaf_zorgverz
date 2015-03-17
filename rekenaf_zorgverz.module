@@ -109,7 +109,7 @@ function rekenaf_zorgverz_page_view() {
     'page_items' => _rekenaf_zorgverz_page_items(),
     'statement_form' => drupal_get_form('rekenaf_zorgverz_statement_form'),
     'statements' => _rekenaf_zorgverz_statements(),
-    'statement_thumbs' => _rekenaf_zorgverz_statement_thumbs(),
+    //'statement_thumbs' => _rekenaf_zorgverz_statement_thumbs(),
     'persons' => _rekenaf_zorgverz_persons(),
   );
 }
@@ -210,19 +210,30 @@ function _rekenaf_zorgverz_page_items() {
 }
 
 function _rekenaf_zorgverz_statements() {
-  $build = array(
-    '#theme_wrappers' => array('rekenaf_zorgverz_statements'),
-  );
-  
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'statement')
-    ->propertyCondition('published', 1);
-  $result = $query->execute();
-  if (isset($result['statement'])) {
-    $statements_nids = array_keys($result['statement']);
-    $statements = entity_load('statement', $statements_nids);
-    foreach ($statements as $statement) {
-      $build[] = array('#theme' => 'rekenaf_zorgverz_statement', '#statement' => $statement);
+  $build = &drupal_static(__FUNCTION__);
+  if (!isset($build)) {
+    if ($cache = cache_get('rekenaf_zorgverz_statements_data')) {
+      $build = $cache->data;
+    }
+    else {
+      $build = array(
+        '#theme_wrappers' => array('rekenaf_zorgverz_statements'),
+      );
+      
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'statement')
+        ->propertyCondition('published', 1)
+        ->propertyOrderBy('date', 'DESC')
+        ->range(NULL, 500);
+      $result = $query->execute();
+      if (isset($result['statement'])) {
+        $statements_nids = array_keys($result['statement']);
+        $statements = entity_load('statement', $statements_nids);
+        foreach ($statements as $statement) {
+          $build[] = array('#theme' => 'rekenaf_zorgverz_statement', '#statement' => $statement);
+        }
+      }
+      cache_set('rekenaf_zorgverz_statements_data', $build, 'cache', time() + 600);
     }
   }
   return $build;
