@@ -267,6 +267,14 @@ function _rekenaf_zorgverz_page_items_get_nodequeue_id() {
 }
 
 function rekenaf_zorgverz_settings_form($form, &$form_state) {
+  $statements_quantity = rekenaf_zorgverz_statements_quantity();
+
+  if ($statements_quantity) {
+    $form['rekenaf_zorgverz_statements_quantity'] = array(
+      '#markup' => '<p><strong>Totaal aantal steunbetuigingen: ' . $statements_quantity . '</strong></p>',
+    );
+  }
+
   $form['rekenaf_zorgverz_label'] = array(
     '#title' => 'Label',
     '#type' => 'textfield',
@@ -742,4 +750,15 @@ function rekenaf_zorgverz_og_tags() {
   foreach ($tags as $key => $val) {
     drupal_add_html_head($val, $key);
   }
+}
+
+function rekenaf_zorgverz_statements_quantity() {
+  $result = db_query("SELECT COUNT(*) AS count FROM rekenaf_zorgverz_statements");
+    
+  if ($result) {
+    $record = $result->fetchAssoc('count');
+    $quantity = $record['count'];
+    return $quantity;
+  }
+  return FALSE;
 }
