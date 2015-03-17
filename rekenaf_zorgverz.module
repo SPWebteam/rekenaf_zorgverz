@@ -212,7 +212,7 @@ function _rekenaf_zorgverz_page_items() {
 function _rekenaf_zorgverz_statements() {
   $build = &drupal_static(__FUNCTION__);
   if (!isset($build)) {
-    if ($cache = cache_get('rekenaf_zorgverz_statements_data')) {
+    if ($cache = cache_get('rekenaf_zorgverz_statements_data') && time() < $cache->expire) {
       $build = $cache->data;
     }
     else {
@@ -758,7 +758,7 @@ function rekenaf_zorgverz_og_tags() {
 function rekenaf_zorgverz_statements_quantity() {
   $my_data = &drupal_static(__FUNCTION__);
   if (!isset($my_data)) {
-    if ($cache = cache_get('rekenaf_zorgverz_statements_quantity')) {
+    if ($cache = cache_get('rekenaf_zorgverz_statements_quantity') && time() < $cache->expire) {
       $my_data = $cache->data;
     }
     else {
