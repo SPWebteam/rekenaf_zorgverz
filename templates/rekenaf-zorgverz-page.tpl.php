@@ -59,6 +59,9 @@
     <?php print $statements_quantity ? '<p><strong>Reeds ' . $statements_quantity . ' mensen hebben een steunbetuiging ingezonden.</strong> We tonen hier de laatste 500 geselecteerde steunbetuigingen.</p>' : ''; ?>
     <?php print $element['statements']['#children']; ?>
     <div class="node text-wrapper items">
+      <p>Mr. Drs. Cobie Groenendijk - Psychiater bij het NPI & in de vrijgevestigde praktijk in Amsterdam</p> 
+      <img src="<?php print '/' . $module_path; ?>/images/c_groenendijk.jpg" />
+      <blockquote>Voor mij als zorgverlener is de marktwerking in de zorg een kwelling. De cultuur van wantrouwen met bijkomende excessieve controle-bureaucratie richting zorgverleners is geestdodend en zet de intrinsieke motivatie ernstig onder druk. Pati&euml;nten lijden onder het vercommercialiseren van de zorg doordat deze neoliberale regering mensen die gebruik moeten maken van zorg wegzet als een "schadelast". Een regering die ervoor kiest om zorgverleners en pati&euml;nten te stigmatiseren en met wantrouwen tegemoet te treden en hun veilige band te verbreken ten bate van de winsten van private partijen verdient het niet langer aan te blijven. Zo'n regering is schadelijk voor onze gezondheid en welzijn. Nederland heeft niet minder maar meer solidariteit en verbinding nodig, juist in de zorg, juist in tijden van crisis en kwetsbaarheid.</blockquote> 
       <p>Dr. Jaap van den Heuvel - directievoorzitter Reinier de Graaf Groep</p> 
       <img src="<?php print '/' . $module_path; ?>/images/jaap_potret.jpg" />
       <blockquote>Marktwerking heeft de zorg niet goedkoper, beter of toegankelijker gemaakt. We kunnen dus stoppen met die onoverzichtelijke zorgpolissen, het eigen risico en onbegrijpelijke facturen. Laat zorgverleners vooral goed samenwerken en de juiste zorg op de juiste plek leveren. Daar wordt de pati&euml;nt echt beter van.</blockquote> 
@@ -86,6 +89,9 @@
 <div class="content-wrap">
   <div class="node text-wrapper items" id="support-examples">
     <p><strong>Steunbetuigingen</strong></p>
+      <p>Mr. Drs. Cobie Groenendijk - Psychiater bij het NPI &amp; in de vrijgevestigde praktijk in Amsterdam</p> 
+      <img src="<?php print '/' . $module_path; ?>/images/c_groenendijk.jpg" />
+      <blockquote>Voor mij als zorgverlener is de marktwerking in de zorg een kwelling. De cultuur van wantrouwen met bijkomende excessieve controle-bureaucratie richting zorgverleners is geestdodend en zet de intrinsieke motivatie ernstig onder druk. Pati&euml;nten lijden onder het vercommercialiseren van de zorg doordat deze neoliberale regering mensen die gebruik moeten maken van zorg wegzet als een "schadelast". Een regering die ervoor kiest om zorgverleners en pati&euml;nten te stigmatiseren en met wantrouwen tegemoet te treden en hun veilige band te verbreken ten bate van de winsten van private partijen verdient het niet langer aan te blijven. Zo'n regering is schadelijk voor onze gezondheid en welzijn. Nederland heeft niet minder maar meer solidariteit en verbinding nodig, juist in de zorg, juist in tijden van crisis en kwetsbaarheid.</blockquote> 
     <p>Dr. Jaap van den Heuvel - directievoorzitter Reinier de Graaf Groep</p> 
     <img src="<?php print '/' . $module_path; ?>/images/jaap_potret.jpg" />
     <blockquote>Marktwerking heeft de zorg niet goedkoper, beter of toegankelijker gemaakt. We kunnen dus stoppen met die onoverzichtelijke zorgpolissen, het eigen risico en onbegrijpelijke facturen. Laat zorgverleners vooral goed samenwerken en de juiste zorg op de juiste plek leveren. Daar wordt de pati&euml;nt echt beter van.</blockquote> 
