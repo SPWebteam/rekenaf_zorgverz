@@ -10,3 +10,10 @@ dependencies[] = kw_itemnames_nodequeue
 dependencies[] = nu
 
 stylesheets[all][] = rekenaf_zorgverz.css
+
+
+; Information added by drush on 2015-12-17
+version = "a627c703ac068dde4cebfc3e1aaa043a3b790338"
+project = "rekenaf_zorgverz"
+datestamp = "1450363808"
+

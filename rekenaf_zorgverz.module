@@ -87,6 +87,7 @@ function rekenaf_zorgverz_page_view() {
   $header_image = variable_get('rekenaf_zorgverz_header_image', 0);
   $sp_zorg_image = variable_get('rekenaf_zorgverz_sp_zorg_image', 0);
   $verspilling_zorg_image = variable_get('rekenaf_zorgverz_verspilling_zorg_image', 0);
+  $zorgvanons_image = variable_get('rekenaf_zorgverz_zorgvanons_image', 0);
 
   // Add OG tags.
   rekenaf_zorgverz_og_tags();
@@ -97,6 +98,7 @@ function rekenaf_zorgverz_page_view() {
     '#header_image_label' => variable_get('rekenaf_zorgverz_label', ''),
     '#sp_zorg_image_fid' => $sp_zorg_image,
     '#verspilling_zorg_image_fid' => $verspilling_zorg_image,
+    '#zorgvanons_image_fid' => $zorgvanons_image,
     '#attached' => array(
       'library' => array(
         array('rekenaf_zorgverz', 'owl-carousel'),
@@ -321,6 +323,16 @@ function rekenaf_zorgverz_settings_form($form, &$form_state) {
     '#tree' => TRUE,
   );
 
+  $form['rekenaf_zorgverz_zorgvanons_image'] = array(
+    '#title' => 'Zorg van Ons afbeelding',
+    '#type' => 'media',
+    '#collapsed' => FALSE,
+    '#default_value' => variable_get('rekenaf_zorgverz_zorgvanons_image', array('fid' => 0)),
+    '#required' => FALSE,
+    '#description' => '',
+    '#tree' => TRUE,
+  );
+
   return system_settings_form($form);
 }
 
@@ -487,6 +499,14 @@ function template_preprocess_rekenaf_zorgverz_page(&$variables) {
       $variables['verspilling_zorg_image'] = spmedia_page_section_content_picture($file);
     }
   }
+
+  if ($fid = $variables['element']['#zorgvanons_image_fid']) {
+    $file = file_load($fid);
+    if ($file) {
+      $variables['zorgvanons_image'] = spmedia_page_section_content_picture($file);
+    }
+  }
+
 }
 
 

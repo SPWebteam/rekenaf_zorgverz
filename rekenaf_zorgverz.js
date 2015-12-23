@@ -106,24 +106,24 @@ $(window).on('load', function() {
       }, "slow");
     });
 
-    $("#stopzorgverspilling-title").click(function(event){
+    $("#stopmarktwerking-title").click(function(event){
       event.preventDefault();
       $("#support-examples").show();
       $(".rekenaf-persons").show();
       $(".tab-content").hide();
-      $("#stopzorgverspilling-content").show();
+      $("#stopmarktwerking-content").show();
       $(".tab-title").removeClass("active");
-      $("#stopzorgverspilling-title").addClass("active");
+      $("#stopmarktwerking-title").addClass("active");
     });
 
-    $("#onzezorg-title").click(function(event){
+    $("#zorgvanons-title").click(function(event){
       event.preventDefault();
-      $("#support-examples").show();
+      $("#support-examples").hide();
       $(".rekenaf-persons").show();
       $(".tab-content").hide();
-      $("#onzezorg-content").show();
+      $("#zorgvanons-content").show();
       $(".tab-title").removeClass("active");
-      $("#onzezorg-title").addClass("active");
+      $("#zorgvanons-title").addClass("active");
     });
 
     $("#steunbetuigingen-title").click(function(event){
