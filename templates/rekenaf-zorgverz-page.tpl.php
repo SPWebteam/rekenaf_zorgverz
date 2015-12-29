@@ -67,7 +67,6 @@
   </div>
 
   <div class="node text-wrapper tab-content" id="steunbetuigingen-content">
-    <?php print $element['statement_form']['#children']; ?>
     <?php print $statements_quantity ? '<p><strong>Reeds ' . $statements_quantity . ' mensen hebben een steunbetuiging ingezonden.</strong> We tonen hier de laatste 500 geselecteerde steunbetuigingen.</p>' : ''; ?>
     <?php print $element['statements']['#children']; ?>
     <?php //print $element['statement_thumbs']['#children']; ?>
@@ -101,6 +100,7 @@
     <blockquote>Gezien het gewenste sociale en solidaire karakter van de zorg is goed samenwerken meer in belang van de pati&euml;nt dan concurreren Het is niet verstandig om een private, financi&euml;le instelling op alle stoelen van de zorg te laten zitten. Het belang ligt te eenzijdig en te ver van de verzekerde. Een private zorgverzekeraar voegt &lsquo;in my humble opinion&rsquo; niets toe aan wat de NZa, de Inspectie en het ministerie samen al konden. Alle zaken, die zelf niet essentieel zijn voor het leveren van de zorg, vallen bij een beperkt budget en met gezond verstand als eerste onder het kopje verspilling.</blockquote>
     <p><a href="#steunbetuigingen-content" id="link_to_support_items">Meer steunbetuigingen</a></p>
   </div>
+  <?php print $element['statement_form']['#children']; ?>
   <?php
     global $base_url;
     $url_encoded = urlencode($base_url . '/publiekebasisverzekering');
