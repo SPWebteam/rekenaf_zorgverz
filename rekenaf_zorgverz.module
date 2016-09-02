@@ -214,7 +214,8 @@ function _rekenaf_zorgverz_page_items() {
 function _rekenaf_zorgverz_statements() {
   $build = &drupal_static(__FUNCTION__);
   if (!isset($build)) {
-    if ($cache = cache_get('rekenaf_zorgverz_statements_data') && time() < $cache->expire) {
+    $cache = cache_get('rekenaf_zorgverz_statements_data');
+    if ($cache && time() < $cache->expire) {
       $build = $cache->data;
     }
     else {
@@ -695,9 +696,9 @@ function rekenaf_zorgverz_og_tags() {
   $page_description = 'De zorgverzekeraars verspillen jaarlijks honderden miljoenen aan reclame en klantenbinding, maken winsten, willen beslissen waar u uw zorg krijgt en gaan op de stoel van artsen zitten. Het is hoog tijd dat we de enorme macht van de zorgverzekeraars breken. Dan pakken we de zeggenschap over de zorg terug.';
 
   // Get og image.
-  $image_fid = variable_get('rekenaf_zorgverz_og_image', array('fid' => 0));
-  $image_fid = $image_fid;
+  $image_fid = variable_get('rekenaf_zorgverz_og_image', 0);
   $file = file_load($image_fid);
+
   // Create tags
   $tags = array(
     'og.title' => array(
@@ -778,7 +779,8 @@ function rekenaf_zorgverz_og_tags() {
 function rekenaf_zorgverz_statements_quantity() {
   $my_data = &drupal_static(__FUNCTION__);
   if (!isset($my_data)) {
-    if ($cache = cache_get('rekenaf_zorgverz_statements_quantity') && time() < $cache->expire) {
+  $cache = cache_get('rekenaf_zorgverz_statements_quantity');
+    if ($cache && time() < $cache->expire) {
       $my_data = $cache->data;
     }
     else {

@@ -45,9 +45,7 @@
   </div>
 
   <div class="node text-wrapper">
-    <hr/>
     <p><strong>Update 1 mei 2016:</strong> De SP is, samen met een brede maatschappelijke coalitie het initatief <a href="https://www.nationaalzorgfonds.nl/?ref=spnl-pbz">Nationaal ZorgFonds</a> gestart om de publieke basisverzekering, zonder eigen risico, te realiseren</p>
-    <hr/>
   </div>
 
   <div class="node text-wrapper tab-content" id="stopmarktwerking-content">
