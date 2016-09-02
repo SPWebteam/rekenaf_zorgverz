@@ -31,6 +31,7 @@
     <li id="zorgvanons-title" class="tab-title"><h2><a href="#zorgvanons-content">De zorg is van ons</a></h2></li>
     <li id="steunbetuigingen-title" class="tab-title"><h2><a href="#steunbetuigingen-content">Steunbetuigingen</a></h2></li>
   </ul>
+
   <div class="node text-wrapper tab-content" id="wegmetdezorgverzekeraars-content">
     <p>De zorgverzekeraars verspillen jaarlijks honderden miljoenen aan reclame en klantenbinding, maken winsten, willen beslissen waar u uw zorg krijgt en gaan op de stoel van artsen zitten. Het is hoog tijd dat we de enorme macht van de zorgverzekeraars breken. Dan pakken we de zeggenschap over de zorg terug.</p>
     <p>Het kan als we de basisverzekering weer publiek regelen. Door de zorgverzekeraars om te vormen tot één publieke organisatie kunnen de premies omlaag, de kwaliteit omhoog en halen we de macht weg bij de zorgverzekeraars. Honderden miljoenen worden bespaard op de uitvoering. De bureaucratie wordt aangepakt.</p>
@@ -42,6 +43,13 @@
       </figure>
     </section>
   </div>
+
+  <div class="node text-wrapper">
+    <hr/>
+    <p><strong>Update 1 mei 2016:</strong> De SP is, samen met een brede maatschappelijke coalitie het initatief <a href="https://www.nationaalzorgfonds.nl/?ref=spnl-pbz">Nationaal ZorgFonds</a> gestart om de publieke basisverzekering, zonder eigen risico, te realiseren</p>
+    <hr/>
+  </div>
+
   <div class="node text-wrapper tab-content" id="stopmarktwerking-content">
     <p>Marktwerking heeft onze zorg niet beter gemaakt, wel duurder. Met de publieke basisverzekering verdwijnt de marktwerking uit de zorg. De zorgverzekeraars vormen we om tot &eacute;&eacute;n organisatie. Honderden miljoenen worden bespaard op de uitvoering. De bureaucratie wordt aangepakt en de commerci&euml;le prikkels die uitnodigen tot winstbejag, productiedraaien en verspilling worden gestopt.</p>
     <p>De zorgverzekeraars 9,3 miljard euro op de bank staan en maakten ze in 2013 1,4 miljard euro winst. Ze geven jaarlijks een half miljard uit aan reclame en klantenbinding. Met minder reserves, minder reclame en een betere samenwerking tussen zorginstellingen kunnen de premies fors omlaag.</p>
@@ -100,18 +108,14 @@
     <blockquote>Gezien het gewenste sociale en solidaire karakter van de zorg is goed samenwerken meer in belang van de pati&euml;nt dan concurreren Het is niet verstandig om een private, financi&euml;le instelling op alle stoelen van de zorg te laten zitten. Het belang ligt te eenzijdig en te ver van de verzekerde. Een private zorgverzekeraar voegt &lsquo;in my humble opinion&rsquo; niets toe aan wat de NZa, de Inspectie en het ministerie samen al konden. Alle zaken, die zelf niet essentieel zijn voor het leveren van de zorg, vallen bij een beperkt budget en met gezond verstand als eerste onder het kopje verspilling.</blockquote>
     <p><a href="#steunbetuigingen-content" id="link_to_support_items">Meer steunbetuigingen</a></p>
   </div>
-  <?php print $element['statement_form']['#children']; ?>
+
+  <?php // print $element['statement_form']['#children']; ?>
+
   <?php
     global $base_url;
     $url_encoded = urlencode($base_url . '/publiekebasisverzekering');
     $tweet = urlencode('Ik steun de #PubliekeBasisverzekering. Lage premies, hoge kwaliteit en macht weg bij zorgverzekeraars. Doe ook mee!');
   ?>
-  <ul class="form-social">
-  <li><a href="http://twitter.com/share?url=<?php print $url_encoded; ?>&amp;text=<?php print $tweet; ?>" target="_blank"><span class="sp-icons">t</span>Deel deze actie op Twitter</a></li>
-    <li><a href="http://www.facebook.com/sharer.php?u=<?php print $url_encoded; ?>" target="_blank"><span class="sp-icons">f</span>Deel deze actie op Facebook</a></li>
-    <li><a href="http://plus.google.com/share?url=<?php print $url_encoded; ?>" target="_blank"><span class="sp-icons">g</span>Deel deze actie op Google+</a></li>
-  </ul>
 </div>
 <?php print $element['page_items']['#children']; ?>
 <?php print $element['persons']['#children']; ?>
-
